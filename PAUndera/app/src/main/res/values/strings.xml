@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">PAUndera</string>
+    <string name="notaBach">Nota de Bachillerato</string>
+    <string name="notaComent">Nota de Comentario</string>
+    <string name="notaLang">Nota de Idioma</string>
+    <string name="notaHist">Nota de Historia</string>
+    <string name="notaModG">Nota de Modalidad Seleccionada</string>
+    <string name="boton">Calcula</string>
+
+    <array name="spinnerModG">
+        <item>Mates II</item>
+        <item>Mates Soc. II</item>
+        <item>Latin II</item>
+        <item>Fund. Arte II</item>
+    </array>
+
+    <array name="spinnerRamas">
+        <item>Ingenieria Y Aquitectura</item>
+        <item>Ciencias Sociales Y Juridicas</item>
+        <item>Ciencias</item>
+        <item>Artes Y Humanidades</item>
+    </array>
+
+    <array name="spinnerGradosCiencias">
+        <item>Biologia</item>
+        <item>Bioquimica</item>
+        <item>Enologia</item>
+    </array>
+
+
+    <array name="spinnerAsigCiencias">
+        <item>Biologia</item>
+        <item>CTCM</item>
+        <item>Dibujo Tecnico II</item>
+        <item>Diseño</item>
+        <item>Economia</item>
+        <item>Electrotecnia</item>
+        <item>Fisica</item>
+        <item>Geologia</item>
+        <item>Mates II</item>
+        <item>Mates Soc.II</item>
+        <item>Quimica</item>
+        <item>Tecnologia Ind.</item>
+    </array>
+</resources>
