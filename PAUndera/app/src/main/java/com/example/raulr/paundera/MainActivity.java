@@ -3,6 +3,7 @@ package com.example.raulr.paundera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Double dnotaMod3Aux = Double.parseDouble(notaMod3Aux);
         Double dnotaMod4Aux = Double.parseDouble(notaMod4Aux);
 
-        int spinnerModGAux = spinnerModG.getSelectedItemPosition();
+        String spinnerModGAux = spinnerModG.getSelectedItem().toString();
         int spinnerMod1Aux = spinnerMod1.getSelectedItemPosition();
         int spinnerMod2Aux = spinnerMod2.getSelectedItemPosition();
         int spinnerMod3Aux = spinnerMod3.getSelectedItemPosition();
@@ -102,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String[] gradosCiencias = getResources().getStringArray(R.array.spinnerGradosCiencias);
         String[] asigCiencias = getResources().getStringArray(R.array.spinnerAsigCiencias);
 
-        double notaFGeneral = (Double.parseDouble(notaComentAux) + Double.parseDouble(notaHistoriaAux) + Double.parseDouble(notaIdiomaAux) + dnotaModGAux) / 4;
-        double notaFGexp = 0.6 * Double.parseDouble(notaBachAux) + 0.4 * notaFGeneral;
+        double notaFGeneral = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaModGAux) / 4;
+        double notaFGexp = 0.6 * dnotaBachAux + 0.4 * notaFGeneral;
 
         DecimalFormat df = new DecimalFormat("#.###");
 
@@ -120,18 +121,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 double mod3PP = dnotaMod3Aux * pPonderacion(spinnerGradosAux, spinnerMod3Aux);
                 double mod4PP = dnotaMod4Aux * pPonderacion(spinnerGradosAux, spinnerMod4Aux);
 
-                List<Double> notasEsp = new ArrayList<Double>();
+                List<Double> notasEsp = new ArrayList<>();
 
-                if(mod1PP>=5){
+                if(dnotaMod1Aux>=5){
                     notasEsp.add(mod1PP);
                 }
-                if(mod2PP>=5){
+                if(dnotaMod2Aux>=5){
                     notasEsp.add(mod2PP);
                 }
-                if(mod3PP>=5){
+                if(dnotaMod3Aux>=5){
                     notasEsp.add(mod3PP);
                 }
-                if(mod4PP>=5){
+                if(dnotaMod4Aux>=5){
                     notasEsp.add(mod4PP);
                 }
                 Collections.sort(notasEsp);
@@ -143,19 +144,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
 
                         String twoDigitNum = df.format(notaFinal);
-                        resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                        resultado.setText("1Tu nota sería un " + String.valueOf((notaFinal)));
                     }
                     if(notasEsp.size() == 1){
                         Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
 
                         String twoDigitNum = df.format(notaFinal);
-                        resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                        resultado.setText("2Tu nota sería un " + String.valueOf((notaFinal)));
                     }
                     if(notasEsp.size() == 0){
                         Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral;
 
                         String twoDigitNum = df.format(notaFinal);
-                        resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                        resultado.setText("3Tu nota sería un " + String.valueOf((notaFinal)));
                     }
 
                 } else if (notaFGeneral >= 5) {
@@ -165,19 +166,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
 
                             String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                            resultado.setText("4Tu nota sería un " + String.valueOf((notaFinal)));
                         }
                         if(notasEsp.size() == 1){
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
 
                             String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                            resultado.setText("5Tu nota sería un " + String.valueOf((notaFinal)));
                         }
                         if(notasEsp.size() == 0){
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral;
 
                             String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                            resultado.setText("6Tu nota sería un " + String.valueOf((notaFinal)));
                         }
                     }
                     else {
@@ -187,38 +188,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             double notaFGeneralAux2 = 0;
 
                             if(mod1PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
                             }
                             else if(mod1PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux / 4;
+                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
                             }
 
 
                             if(mod2PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
                             }
                             else if(mod2PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux / 4;
+                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
                             }
 
 
                             if(mod3PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
                             }
                             else if(mod3PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux / 4;
+                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
                             }
 
 
                             if(mod4PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
                             }
                             else if(mod4PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux / 4;
+                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
                             }
 
+                            double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
 
-                            double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, spinnerModGAux);
+                            Log.v("bach", String.valueOf(dnotaBachAux));
+                            Log.v("bach1", String.valueOf(notaFGeneral));
+                            Log.v("bach2", String.valueOf(notasEsp.get(0)));
+                            Log.v("bach3", String.valueOf(notasEsp.get(1)));
 
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
                             Double notaFinal1 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux1 + modGPP + notasEsp.get(1);
@@ -226,15 +231,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             if(notaFinal >= notaFinal1 && notaFinal >= notaFinal2){
                                 String twoDigitNum = df.format(notaFinal);
-                                resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                                resultado.setText("7Tu nota sería un " + twoDigitNum);
                             }
                             if(notaFinal1 >= notaFinal && notaFinal >= notaFinal2){
                                 String twoDigitNum = df.format(notaFinal1);
-                                resultado.setText("Tu nota sería un " + String.valueOf((notaFinal2)));
+                                resultado.setText("8Tu nota sería un " + twoDigitNum);
                             }
                             if(notaFinal2 >= notaFinal1 && notaFinal2 >= notaFinal){
                                 String twoDigitNum = df.format(notaFinal2);
-                                resultado.setText("Tu nota sería un " + String.valueOf((notaFinal2)));
+                                resultado.setText("9Tu nota sería un " + twoDigitNum);
                             }
                         }
                         if(notasEsp.size() == 1){
@@ -242,32 +247,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             double notaFGeneralAux1 = 0;
 
                             if(mod1PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
                             }
 
                             if(mod2PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
                             }
 
                             if(mod3PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
                             }
 
                             if(mod4PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux / 4;
+                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
                             }
 
-                            double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, spinnerModGAux);
+                            double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
 
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
                             Double notaFinal1 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux1 + modGPP;
 
                             if(notaFinal >= notaFinal1){
                                 String twoDigitNum = df.format(notaFinal);
-                                resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                                resultado.setText("11Tu nota sería un " + String.valueOf((notaFinal)));
                             }else{
                                 String twoDigitNum = df.format(notaFinal1);
-                                resultado.setText("Tu nota sería un " + String.valueOf((notaFinal1)));
+                                resultado.setText("12Tu nota sería un " + String.valueOf((notaFinal1)));
                             }
 
                         }
@@ -275,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Double notaFinal = 0.6 * Double.parseDouble(notaBachAux) + 0.4 * notaFGeneral;
 
                             String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("Tu nota sería un " + String.valueOf((notaFinal)));
+                            resultado.setText("13Tu nota sería un " + String.valueOf((notaFinal)));
                         }
                     }
                 }
