@@ -5,19 +5,21 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Button calcular;
     private TextView resultado;
@@ -65,11 +67,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spinnerRamas = (Spinner) findViewById(R.id.spinnerRamas);
         spinnerGrados = (Spinner) findViewById(R.id.spinnerGrados);
 
+        ArrayAdapter<CharSequence> adapterUni = ArrayAdapter.createFromResource(this, R.array.spinnerRamas, android.R.layout.simple_spinner_item);
+        adapterUni.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRamas.setAdapter(adapterUni);
+        spinnerRamas.setOnItemSelectedListener(this);
+
         calcular.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+
+        checkCampos(notaBach, notaComent, notaHistoria, notaIdioma, notaModG, notaMod1, notaMod2, notaMod3, notaMod4);
 
         String notaBachAux = notaBach.getText().toString();
         String notaComentAux = notaComent.getText().toString();
@@ -93,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Double dnotaMod4Aux = Double.parseDouble(notaMod4Aux);
 
         String spinnerModGAux = spinnerModG.getSelectedItem().toString();
+        String sSpinnerMod1Aux = spinnerMod1.getSelectedItem().toString();
+        String sSpinnerMod2Aux = spinnerMod2.getSelectedItem().toString();
+        String sSpinnerMod3Aux = spinnerMod3.getSelectedItem().toString();
+        String sSpinnerMod4Aux = spinnerMod4.getSelectedItem().toString();
+
         int spinnerMod1Aux = spinnerMod1.getSelectedItemPosition();
         int spinnerMod2Aux = spinnerMod2.getSelectedItemPosition();
         int spinnerMod3Aux = spinnerMod3.getSelectedItemPosition();
@@ -109,178 +123,174 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DecimalFormat df = new DecimalFormat("#.###");
 
 
-        if (notaFGeneral < 4) {
-            resultado.setText("Fase General suspensa con un " + String.valueOf(notaFGeneral));
-        } else {
-            if (notaFGexp < 5) {
-                resultado.setText("Fase Principal suspensa con un " + String.valueOf(notaFGexp));
+        if(!checkSpinners(spinnerModGAux, sSpinnerMod1Aux, sSpinnerMod2Aux, sSpinnerMod3Aux, sSpinnerMod4Aux)) {
+            Toast.makeText(this, "1 o más asignaturas están repetidas", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            if (notaFGeneral < 4) {
+                resultado.setText("Fase General suspensa con un " + String.valueOf(notaFGeneral));
             } else {
+                if (notaFGexp < 5) {
+                    resultado.setText("Fase Principal suspensa con un " + String.valueOf(notaFGexp));
+                } else {
 
-                double mod1PP = dnotaMod1Aux * pPonderacion(spinnerGradosAux, spinnerMod1Aux);
-                double mod2PP = dnotaMod2Aux * pPonderacion(spinnerGradosAux, spinnerMod2Aux);
-                double mod3PP = dnotaMod3Aux * pPonderacion(spinnerGradosAux, spinnerMod3Aux);
-                double mod4PP = dnotaMod4Aux * pPonderacion(spinnerGradosAux, spinnerMod4Aux);
+                    double mod1PP = dnotaMod1Aux * pPonderacion(spinnerGradosAux, spinnerMod1Aux);
+                    double mod2PP = dnotaMod2Aux * pPonderacion(spinnerGradosAux, spinnerMod2Aux);
+                    double mod3PP = dnotaMod3Aux * pPonderacion(spinnerGradosAux, spinnerMod3Aux);
+                    double mod4PP = dnotaMod4Aux * pPonderacion(spinnerGradosAux, spinnerMod4Aux);
 
-                List<Double> notasEsp = new ArrayList<>();
+                    List<Double> notasEsp = new ArrayList<>();
 
-                if(dnotaMod1Aux>=5){
-                    notasEsp.add(mod1PP);
-                }
-                if(dnotaMod2Aux>=5){
-                    notasEsp.add(mod2PP);
-                }
-                if(dnotaMod3Aux>=5){
-                    notasEsp.add(mod3PP);
-                }
-                if(dnotaMod4Aux>=5){
-                    notasEsp.add(mod4PP);
-                }
-                Collections.sort(notasEsp);
-                Collections.reverse(notasEsp);
-
-                if (dnotaModGAux < 5) {
-
-                    if(notasEsp.size() >= 2){
-                        Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
-
-                        String twoDigitNum = df.format(notaFinal);
-                        resultado.setText("1Tu nota sería un " + String.valueOf((notaFinal)));
+                    if (dnotaMod1Aux >= 5) {
+                        notasEsp.add(mod1PP);
                     }
-                    if(notasEsp.size() == 1){
-                        Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
-
-                        String twoDigitNum = df.format(notaFinal);
-                        resultado.setText("2Tu nota sería un " + String.valueOf((notaFinal)));
+                    if (dnotaMod2Aux >= 5) {
+                        notasEsp.add(mod2PP);
                     }
-                    if(notasEsp.size() == 0){
-                        Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral;
-
-                        String twoDigitNum = df.format(notaFinal);
-                        resultado.setText("3Tu nota sería un " + String.valueOf((notaFinal)));
+                    if (dnotaMod3Aux >= 5) {
+                        notasEsp.add(mod3PP);
                     }
+                    if (dnotaMod4Aux >= 5) {
+                        notasEsp.add(mod4PP);
+                    }
+                    Collections.sort(notasEsp);
+                    Collections.reverse(notasEsp);
 
-                } else if (notaFGeneral >= 5) {
+                    if (dnotaModGAux < 5) {
 
-                    if (!Arrays.asList(asigCiencias).contains(spinnerModGAux)) {
-                        if(notasEsp.size() >= 2){
+                        if (notasEsp.size() >= 2) {
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
 
                             String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("4Tu nota sería un " + String.valueOf((notaFinal)));
+                            resultado.setText("1Tu nota sería un " + String.valueOf((notaFinal)));
                         }
-                        if(notasEsp.size() == 1){
+                        if (notasEsp.size() == 1) {
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
 
                             String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("5Tu nota sería un " + String.valueOf((notaFinal)));
+                            resultado.setText("2Tu nota sería un " + String.valueOf((notaFinal)));
                         }
-                        if(notasEsp.size() == 0){
+                        if (notasEsp.size() == 0) {
                             Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral;
 
                             String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("6Tu nota sería un " + String.valueOf((notaFinal)));
+                            resultado.setText("3Tu nota sería un " + String.valueOf((notaFinal)));
                         }
-                    }
-                    else {
-                        if(notasEsp.size() >= 2){
 
-                            double notaFGeneralAux1 = 0;
-                            double notaFGeneralAux2 = 0;
+                    } else if (notaFGeneral >= 5) {
 
-                            if(mod1PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
-                            }
-                            else if(mod1PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
-                            }
+                        if (!Arrays.asList(asigCiencias).contains(spinnerModGAux)) {
+                            if (notasEsp.size() >= 2) {
+                                Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
 
-
-                            if(mod2PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
-                            }
-                            else if(mod2PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
-                            }
-
-
-                            if(mod3PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
-                            }
-                            else if(mod3PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
-                            }
-
-
-                            if(mod4PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
-                            }
-                            else if(mod4PP == notasEsp.get(1)) {
-                                notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
-                            }
-
-                            double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
-
-                            Log.v("bach", String.valueOf(dnotaBachAux));
-                            Log.v("bach1", String.valueOf(notaFGeneral));
-                            Log.v("bach2", String.valueOf(notasEsp.get(0)));
-                            Log.v("bach3", String.valueOf(notasEsp.get(1)));
-
-                            Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
-                            Double notaFinal1 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux1 + modGPP + notasEsp.get(1);
-                            Double notaFinal2 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux2 + notasEsp.get(0) + modGPP;
-
-                            if(notaFinal >= notaFinal1 && notaFinal >= notaFinal2){
                                 String twoDigitNum = df.format(notaFinal);
-                                resultado.setText("7Tu nota sería un " + twoDigitNum);
+                                resultado.setText("4Tu nota sería un " + String.valueOf((notaFinal)));
                             }
-                            if(notaFinal1 >= notaFinal && notaFinal >= notaFinal2){
-                                String twoDigitNum = df.format(notaFinal1);
-                                resultado.setText("8Tu nota sería un " + twoDigitNum);
-                            }
-                            if(notaFinal2 >= notaFinal1 && notaFinal2 >= notaFinal){
-                                String twoDigitNum = df.format(notaFinal2);
-                                resultado.setText("9Tu nota sería un " + twoDigitNum);
-                            }
-                        }
-                        if(notasEsp.size() == 1){
+                            if (notasEsp.size() == 1) {
+                                Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
 
-                            double notaFGeneralAux1 = 0;
-
-                            if(mod1PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
-                            }
-
-                            if(mod2PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
-                            }
-
-                            if(mod3PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
-                            }
-
-                            if(mod4PP == notasEsp.get(0)) {
-                                notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
-                            }
-
-                            double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
-
-                            Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
-                            Double notaFinal1 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux1 + modGPP;
-
-                            if(notaFinal >= notaFinal1){
                                 String twoDigitNum = df.format(notaFinal);
-                                resultado.setText("11Tu nota sería un " + String.valueOf((notaFinal)));
-                            }else{
-                                String twoDigitNum = df.format(notaFinal1);
-                                resultado.setText("12Tu nota sería un " + String.valueOf((notaFinal1)));
+                                resultado.setText("5Tu nota sería un " + String.valueOf((notaFinal)));
                             }
+                            if (notasEsp.size() == 0) {
+                                Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral;
 
-                        }
-                        if(notasEsp.size() == 0){
-                            Double notaFinal = 0.6 * Double.parseDouble(notaBachAux) + 0.4 * notaFGeneral;
+                                String twoDigitNum = df.format(notaFinal);
+                                resultado.setText("6Tu nota sería un " + String.valueOf((notaFinal)));
+                            }
+                        } else {
+                            if (notasEsp.size() >= 2) {
 
-                            String twoDigitNum = df.format(notaFinal);
-                            resultado.setText("13Tu nota sería un " + String.valueOf((notaFinal)));
+                                double notaFGeneralAux1 = 0;
+                                double notaFGeneralAux2 = 0;
+
+                                if (mod1PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
+                                } else if (mod1PP == notasEsp.get(1)) {
+                                    notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
+                                }
+
+
+                                if (mod2PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
+                                } else if (mod2PP == notasEsp.get(1)) {
+                                    notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
+                                }
+
+
+                                if (mod3PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
+                                } else if (mod3PP == notasEsp.get(1)) {
+                                    notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
+                                }
+
+
+                                if (mod4PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
+                                } else if (mod4PP == notasEsp.get(1)) {
+                                    notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
+                                }
+
+                                double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
+
+
+                                Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
+                                Double notaFinal1 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux1 + modGPP + notasEsp.get(1);
+                                Double notaFinal2 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux2 + notasEsp.get(0) + modGPP;
+
+                                if (notaFinal >= notaFinal1 && notaFinal >= notaFinal2) {
+                                    String twoDigitNum = df.format(notaFinal);
+                                    resultado.setText("7Tu nota sería un " + twoDigitNum);
+                                }
+                                if (notaFinal1 >= notaFinal && notaFinal >= notaFinal2) {
+                                    String twoDigitNum = df.format(notaFinal1);
+                                    resultado.setText("8Tu nota sería un " + twoDigitNum);
+                                }
+                                if (notaFinal2 >= notaFinal1 && notaFinal2 >= notaFinal) {
+                                    String twoDigitNum = df.format(notaFinal2);
+                                    resultado.setText("9Tu nota sería un " + twoDigitNum);
+                                }
+                            }
+                            if (notasEsp.size() == 1) {
+
+                                double notaFGeneralAux1 = 0;
+
+                                if (mod1PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod1Aux) / 4;
+                                }
+
+                                if (mod2PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod2Aux) / 4;
+                                }
+
+                                if (mod3PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod3Aux) / 4;
+                                }
+
+                                if (mod4PP == notasEsp.get(0)) {
+                                    notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
+                                }
+
+                                double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
+
+                                Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
+                                Double notaFinal1 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux1 + modGPP;
+
+                                if (notaFinal >= notaFinal1) {
+                                    String twoDigitNum = df.format(notaFinal);
+                                    resultado.setText("11Tu nota sería un " + String.valueOf((notaFinal)));
+                                } else {
+                                    String twoDigitNum = df.format(notaFinal1);
+                                    resultado.setText("12Tu nota sería un " + String.valueOf((notaFinal1)));
+                                }
+
+                            }
+                            if (notasEsp.size() == 0) {
+                                Double notaFinal = 0.6 * Double.parseDouble(notaBachAux) + 0.4 * notaFGeneral;
+
+                                String twoDigitNum = df.format(notaFinal);
+                                resultado.setText("13Tu nota sería un " + String.valueOf((notaFinal)));
+                            }
                         }
                     }
                 }
@@ -294,6 +304,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {0.2, 0.2, 0.0, 0.0, 0.0, 0.1, 0.2, 0.2, 0.2, 0.0, 0.2, 0.1}};
 
         return tablaPondCiencias[x][y];
+    }
+    public boolean checkSpinners(String x, String y, String z, String t, String w){
+        boolean res = true;
+        if(x.equals(y) || x.equals(z) || x.equals(t) || x.equals(w) || y.equals(z) || y.equals(t) || y.equals(w) || z.equals(t) || z.equals(w) || t.equals(w)){
+            res = false;
+        }
+        return res;
+    }
+    public void checkCampos(EditText a, EditText b, EditText c, EditText d, EditText e, EditText f, EditText g, EditText h, EditText i){
+        List<EditText> campos = Arrays.asList(a, b, c, d, e, f, g, h, i);
+        for(EditText campo: campos){
+            if(campo.getText().toString().matches("")){
+                campo.setText("0");
+            }
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+        String selection = parent.getItemAtPosition(i).toString();
+        if(selection.equals("spinnerGradosCiencias")){
+            ArrayAdapter<CharSequence> adapterRama = ArrayAdapter.createFromResource(this, R.array.spinnerGradosCiencias, android.R.layout.simple_spinner_item);
+            adapterRama.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerRamas.setAdapter(adapterRama);
+        }else{
+            ArrayAdapter<CharSequence> adapterRama = ArrayAdapter.createFromResource(this, R.array.spinnerRamas, android.R.layout.simple_spinner_item);
+            adapterRama.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerRamas.setAdapter(adapterRama);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
 
