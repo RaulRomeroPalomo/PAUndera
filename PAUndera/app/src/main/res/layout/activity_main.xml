@@ -8,31 +8,41 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
-            <Spinner
-                android:id="@+id/spinnerMod4"
-                android:layout_width="0dp"
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/mod4"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginRight="12dp"
                 android:entries="@array/spinnerAsigCiencias"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notaMod3" />
+                app:layout_constraintTop_toBottomOf="@id/notaMod3"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
 
-            <Spinner
-                android:id="@+id/spinnerMod3"
-                android:layout_width="0dp"
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/mod3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
@@ -43,7 +53,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notaMod2" />
+                app:layout_constraintTop_toBottomOf="@id/notaMod2"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+
 
             <EditText
                 android:id="@+id/notaMod4"
@@ -56,7 +67,7 @@
                 android:hint="@string/notaModG"
                 android:inputType="numberDecimal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerMod4" />
+                app:layout_constraintTop_toBottomOf="@+id/mod4" />
 
             <EditText
                 android:id="@+id/notaMod3"
@@ -69,7 +80,7 @@
                 android:hint="@string/notaModG"
                 android:inputType="numberDecimal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerMod3" />
+                app:layout_constraintTop_toBottomOf="@+id/mod3" />
 
             <EditText
                 android:id="@+id/notaMod2"
@@ -82,7 +93,7 @@
                 android:hint="@string/notaModG"
                 android:inputType="numberDecimal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerMod2" />
+                app:layout_constraintTop_toBottomOf="@+id/mod2" />
 
             <EditText
                 android:id="@+id/notaLang"
@@ -110,9 +121,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/notaLang" />
 
-            <Spinner
-                android:id="@+id/spinnerModG"
-                android:layout_width="0dp"
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/modG"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
@@ -121,13 +133,15 @@
                 android:layout_marginRight="12dp"
                 android:entries="@array/spinnerModG"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notaHist" />
+                app:layout_constraintTop_toBottomOf="@id/notaHist"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
 
-            <Spinner
-                android:id="@+id/spinnerMod1"
-                android:layout_width="0dp"
-                android:layout_height="28dp"
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/mod1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="8dp"
@@ -137,7 +151,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notaModG" />
+                app:layout_constraintTop_toBottomOf="@id/notaModG"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+
 
             <EditText
                 android:id="@+id/notaModG"
@@ -150,7 +165,7 @@
                 android:hint="@string/notaModG"
                 android:inputType="numberDecimal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerModG" />
+                app:layout_constraintTop_toBottomOf="@+id/modG" />
 
             <EditText
                 android:id="@+id/notaMod1"
@@ -163,7 +178,7 @@
                 android:hint="@string/notaModG"
                 android:inputType="numberDecimal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerMod1" />
+                app:layout_constraintTop_toBottomOf="@+id/mod1" />
 
             <EditText
                 android:id="@+id/notaBach"
@@ -191,9 +206,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/notaBach" />
 
-            <Spinner
-                android:id="@+id/spinnerMod2"
-                android:layout_width="0dp"
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/mod2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
@@ -204,66 +220,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notaMod1" />
+                app:layout_constraintTop_toBottomOf="@id/notaMod1"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
 
-            <Spinner
-                android:id="@+id/spinnerRamas"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
-                android:entries="@array/spinnerRamas"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notaMod4" />
 
-            <Spinner
-                android:id="@+id/spinnerGrados"
-                android:layout_width="0dp"
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/grados"
+                android:layout_width="197dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:entries="@array/spinnerGradosCiencias"
+                app:layout_constraintBottom_toTopOf="@+id/numResultado"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerRamas" />
-
-            <TextView
-                android:id="@+id/resultado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="30dp"
-                android:text="Resultado:"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/numResultado"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerGrados"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@id/notaMod4"></com.toptoche.searchablespinnerlibrary.SearchableSpinner>
 
             <TextView
                 android:id="@+id/numResultado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginEnd="180dp"
                 android:layout_marginRight="180dp"
                 android:layout_marginBottom="30dp"
                 android:text="numResultado"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerGrados"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
                 android:id="@+id/calcular"

@@ -1,5 +1,7 @@
 package com.example.raulr.paundera;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -7,11 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -19,12 +24,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button calcular;
     private TextView resultado;
-    private Spinner spinnerModG, spinnerMod1, spinnerMod2, spinnerMod3, spinnerMod4, spinnerRamas, spinnerGrados;
     private EditText notaBach, notaComent, notaIdioma, notaHistoria, notaModG, notaMod1, notaMod2, notaMod3, notaMod4;
+    private SearchableSpinner grados, modG, mod1, mod2, mod3, mod4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,26 +64,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         notaMod4.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2, 2), new InputFilterMinMax(0, 10)});
 
 
-        spinnerModG = (Spinner) findViewById(R.id.spinnerModG);
-        spinnerMod1 = (Spinner) findViewById(R.id.spinnerMod1);
-        spinnerMod2 = (Spinner) findViewById(R.id.spinnerMod2);
-        spinnerMod3 = (Spinner) findViewById(R.id.spinnerMod3);
-        spinnerMod4 = (Spinner) findViewById(R.id.spinnerMod4);
-        spinnerRamas = (Spinner) findViewById(R.id.spinnerRamas);
-        spinnerGrados = (Spinner) findViewById(R.id.spinnerGrados);
+        modG = (SearchableSpinner) findViewById(R.id.modG);
+        mod1 = (SearchableSpinner) findViewById(R.id.mod1);
+        mod2 = (SearchableSpinner) findViewById(R.id.mod2);
+        mod3 = (SearchableSpinner) findViewById(R.id.mod3);
+        mod4 = (SearchableSpinner) findViewById(R.id.mod4);
+        grados = (SearchableSpinner) findViewById(R.id.grados);
 
-        ArrayAdapter<CharSequence> adapterUni = ArrayAdapter.createFromResource(this, R.array.spinnerRamas, android.R.layout.simple_spinner_item);
-        adapterUni.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRamas.setAdapter(adapterUni);
-        spinnerRamas.setOnItemSelectedListener(this);
+        modG.setTitle("Selecciona un asignatura");
+        modG.setPositiveButton("OK");
+        mod1.setTitle("Selecciona un asignatura");
+        mod1.setPositiveButton("OK");
+        mod2.setTitle("Selecciona un asignatura");
+        mod2.setPositiveButton("OK");
+        mod3.setTitle("Selecciona un asignatura");
+        mod3.setPositiveButton("OK");
+        mod4.setTitle("Selecciona un asignatura");
+        mod4.setPositiveButton("OK");
+
+        grados.setTitle("Selecciona un grado");
+        grados.setPositiveButton("OK");
 
         calcular.setOnClickListener(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
 
         checkCampos(notaBach, notaComent, notaHistoria, notaIdioma, notaModG, notaMod1, notaMod2, notaMod3, notaMod4);
+
+        String[] gradosCiencias = getResources().getStringArray(R.array.spinnerGradosCiencias);
 
         String notaBachAux = notaBach.getText().toString();
         String notaComentAux = notaComent.getText().toString();
@@ -101,21 +117,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Double dnotaMod3Aux = Double.parseDouble(notaMod3Aux);
         Double dnotaMod4Aux = Double.parseDouble(notaMod4Aux);
 
-        String spinnerModGAux = spinnerModG.getSelectedItem().toString();
-        String sSpinnerMod1Aux = spinnerMod1.getSelectedItem().toString();
-        String sSpinnerMod2Aux = spinnerMod2.getSelectedItem().toString();
-        String sSpinnerMod3Aux = spinnerMod3.getSelectedItem().toString();
-        String sSpinnerMod4Aux = spinnerMod4.getSelectedItem().toString();
+        int nModGAux = modG.getSelectedItemPosition();
+        int nMod1Aux = mod1.getSelectedItemPosition();
+        int nMod2Aux = mod2.getSelectedItemPosition();
+        int nMod3Aux = mod3.getSelectedItemPosition();
+        int nMod4Aux = mod4.getSelectedItemPosition();
 
-        int spinnerMod1Aux = spinnerMod1.getSelectedItemPosition();
-        int spinnerMod2Aux = spinnerMod2.getSelectedItemPosition();
-        int spinnerMod3Aux = spinnerMod3.getSelectedItemPosition();
-        int spinnerMod4Aux = spinnerMod4.getSelectedItemPosition();
-        String spinnerRamasAux = spinnerRamas.getSelectedItem().toString();
-        int spinnerGradosAux = spinnerGrados.getSelectedItemPosition();
-
-        String[] gradosCiencias = getResources().getStringArray(R.array.spinnerGradosCiencias);
         String[] asigCiencias = getResources().getStringArray(R.array.spinnerAsigCiencias);
+        String[] asigModG = getResources().getStringArray(R.array.spinnerModG);
+
+        String modGAux = Arrays.asList(asigModG).get(nModGAux);
+        String mod1Aux = Arrays.asList(asigCiencias).get(nMod1Aux);
+        String mod2Aux = Arrays.asList(asigCiencias).get(nMod2Aux);
+        String mod3Aux = Arrays.asList(asigCiencias).get(nMod3Aux);
+        String mod4Aux = Arrays.asList(asigCiencias).get(nMod4Aux);
+        Log.e("1", modGAux);
+        Log.e("2", mod1Aux);
+        Log.e("3", mod2Aux);
+        Log.e("4", mod3Aux);
+        Log.e("5", mod4Aux);
+        int gradoIndex = grados.getSelectedItemPosition();
+        String grado = Arrays.asList(gradosCiencias).get(gradoIndex);
 
         double notaFGeneral = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaModGAux) / 4;
         double notaFGexp = 0.6 * dnotaBachAux + 0.4 * notaFGeneral;
@@ -123,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DecimalFormat df = new DecimalFormat("#.###");
 
 
-        if(!checkSpinners(spinnerModGAux, sSpinnerMod1Aux, sSpinnerMod2Aux, sSpinnerMod3Aux, sSpinnerMod4Aux)) {
+        if(!checkSpinners(modGAux, mod1Aux, mod2Aux, mod3Aux, mod4Aux)) {
             Toast.makeText(this, "1 o más asignaturas están repetidas", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -134,10 +156,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     resultado.setText("Fase Principal suspensa con un " + String.valueOf(notaFGexp));
                 } else {
 
-                    double mod1PP = dnotaMod1Aux * pPonderacion(spinnerGradosAux, spinnerMod1Aux);
-                    double mod2PP = dnotaMod2Aux * pPonderacion(spinnerGradosAux, spinnerMod2Aux);
-                    double mod3PP = dnotaMod3Aux * pPonderacion(spinnerGradosAux, spinnerMod3Aux);
-                    double mod4PP = dnotaMod4Aux * pPonderacion(spinnerGradosAux, spinnerMod4Aux);
+                    double mod1PP = dnotaMod1Aux * pPonderacion(gradoIndex, nMod1Aux);
+                    double mod2PP = dnotaMod2Aux * pPonderacion(gradoIndex, nMod2Aux);
+                    double mod3PP = dnotaMod3Aux * pPonderacion(gradoIndex, nMod3Aux);
+                    double mod4PP = dnotaMod4Aux * pPonderacion(gradoIndex, nMod4Aux);
 
                     List<Double> notasEsp = new ArrayList<>();
 
@@ -179,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     } else if (notaFGeneral >= 5) {
 
-                        if (!Arrays.asList(asigCiencias).contains(spinnerModGAux)) {
+                        if (!Arrays.asList(asigCiencias).contains(modGAux)) {
                             if (notasEsp.size() >= 2) {
                                 Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
 
@@ -231,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     notaFGeneralAux2 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
                                 }
 
-                                double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
+                                double modGPP = dnotaModGAux * pPonderacion(gradoIndex, Arrays.asList(asigCiencias).indexOf(modGAux));
 
 
                                 Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + notasEsp.get(1);
@@ -271,25 +293,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     notaFGeneralAux1 = (dnotaComentAux + dnotaHistoriaAux + dnotaIdiomaAux + dnotaMod4Aux) / 4;
                                 }
 
-                                double modGPP = dnotaModGAux * pPonderacion(spinnerGradosAux, Arrays.asList(asigCiencias).indexOf(spinnerModGAux));
+                                double modGPP = dnotaModGAux * pPonderacion(gradoIndex, Arrays.asList(asigCiencias).indexOf(modGAux));
 
-                                Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0);
-                                Double notaFinal1 = 0.6 * dnotaBachAux + 0.4 * notaFGeneralAux1 + modGPP;
+                                Double notaFinal = 0.6 * dnotaBachAux + 0.4 * notaFGeneral + notasEsp.get(0) + modGPP;
 
-                                if (notaFinal >= notaFinal1) {
-                                    String twoDigitNum = df.format(notaFinal);
-                                    resultado.setText("11Tu nota sería un " + String.valueOf((notaFinal)));
-                                } else {
-                                    String twoDigitNum = df.format(notaFinal1);
-                                    resultado.setText("12Tu nota sería un " + String.valueOf((notaFinal1)));
-                                }
+                                String twoDigitNum = df.format(notaFinal);
+                                resultado.setText("11Tu nota sería un " + String.valueOf((notaFinal)));
 
                             }
                             if (notasEsp.size() == 0) {
-                                Double notaFinal = 0.6 * Double.parseDouble(notaBachAux) + 0.4 * notaFGeneral;
+
+                                double modGPP = dnotaModGAux * pPonderacion(gradoIndex, Arrays.asList(asigCiencias).indexOf(modGAux));
+                                Double notaFinal = 0.6 * Double.parseDouble(notaBachAux) + 0.4 * notaFGeneral + modGPP;
 
                                 String twoDigitNum = df.format(notaFinal);
-                                resultado.setText("13Tu nota sería un " + String.valueOf((notaFinal)));
+                                resultado.setText("12Tu nota sería un " + String.valueOf((notaFinal)));
                             }
                         }
                     }
@@ -319,25 +337,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 campo.setText("0");
             }
         }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
-        String selection = parent.getItemAtPosition(i).toString();
-        if(selection.equals("spinnerGradosCiencias")){
-            ArrayAdapter<CharSequence> adapterRama = ArrayAdapter.createFromResource(this, R.array.spinnerGradosCiencias, android.R.layout.simple_spinner_item);
-            adapterRama.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerRamas.setAdapter(adapterRama);
-        }else{
-            ArrayAdapter<CharSequence> adapterRama = ArrayAdapter.createFromResource(this, R.array.spinnerRamas, android.R.layout.simple_spinner_item);
-            adapterRama.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerRamas.setAdapter(adapterRama);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 }
 

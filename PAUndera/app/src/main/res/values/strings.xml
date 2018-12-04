@@ -19,36 +19,11 @@
         <item>2020/21/22</item>
     </array>
 
-    <array name="spinnerRamas">
-        <item>Ingenieria Y Aquitectura</item>
-        <item>Ciencias Sociales Y Juridicas</item>
-        <item>Ciencias</item>
-        <item>Artes Y Humanidades</item>
-        <item>Ciencias de la Salud</item>
-    </array>
-
     <array name="spinnerGradosCiencias">
         <item>Biologia</item>
         <item>Bioquimica</item>
         <item>Enologia</item>
     </array>
-
-    <array name="spinnerGradosIngArq">
-        <item>Edificación</item>
-    </array>
-
-    <array name="spinnerGradosSocJur">
-        <item>Derecho</item>
-    </array>
-
-    <array name="spinnerGradosSalud">
-        <item>Medicina</item>
-    </array>
-
-    <array name="spinnerGradosArtHum">
-        <item>Filosofia</item>
-    </array>
-
 
     <array name="spinnerAsigCiencias">
         <item>Biologia</item>
